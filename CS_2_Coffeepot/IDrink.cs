@@ -5,7 +5,11 @@ using System.Text;
 
 namespace CS_2_Coffeepot
 {
-    public class Drink : IDrink
+    public interface IDrink
     {
+        int Name { get; set; }
+        int Price { get; set; }
+
+        void Cook();
     }
 }

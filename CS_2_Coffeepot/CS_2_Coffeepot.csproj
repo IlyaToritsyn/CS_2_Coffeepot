@@ -55,6 +55,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Americano.cs" />
+    <Compile Include="Black.cs" />
+    <Compile Include="Cappuccino.cs" />
+    <Compile Include="Coffee.cs" />
+    <Compile Include="ConPanna.cs" />
+    <Compile Include="CreamAndSugar.cs" />
+    <Compile Include="Doppio.cs" />
+    <Compile Include="DryCappuccino.cs" />
+    <Compile Include="Espresso.cs" />
+    <Compile Include="FlatWhite.cs" />
+    <Compile Include="IDrink.cs" />
+    <Compile Include="IMachine.cs" />
+    <Compile Include="Latte.cs" />
+    <Compile Include="Macchiano.cs" />
+    <Compile Include="Machine.cs" />
+    <Compile Include="Ristretto.cs" />
     <Compile Include="Strength.cs" />
     <Compile Include="StrengthDrink.cs" />
     <Compile Include="Sugar.cs" />

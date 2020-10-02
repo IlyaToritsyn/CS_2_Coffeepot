@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CS_2_Coffeepot
 {
-    public class Drink : IDrink
+    public interface IMachine
     {
     }
 }
