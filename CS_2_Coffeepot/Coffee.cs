@@ -7,19 +7,37 @@ namespace CS_2_Coffeepot
 {
     public abstract class Coffee : Drink
     {
-        public Strength Strength
+        public int strength = 3;
+        public int sugar = 3;
+        public int Strength
         {
-            get => default;
+            get
+            {
+                return strength;
+            }
+
             set
             {
+                if (value >= 0 && value < 5)
+                {
+                    strength = value;
+                }
             }
         }
 
-        public Sugar Sugar
+        public int Sugar
         {
-            get => default;
+            get
+            {
+                return sugar;
+            }
+
             set
             {
+                if (value >= 0 && value < 5)
+                {
+                    sugar = value;
+                }
             }
         }
     }

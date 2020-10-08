@@ -7,5 +7,10 @@ namespace CS_2_Coffeepot
 {
     public class Cappuccino : Coffee
     {
+        public Cappuccino()
+        {
+            Name = "Cappuccino";
+            Price = 50.00;
+        }
     }
 }

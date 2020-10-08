@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS_2_Coffeepot"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="592" Width="376">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="177*"/>
+            <ColumnDefinition Width="175*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="Give_10" Content="10" HorizontalAlignment="Left" Margin="65,22,0,0" VerticalAlignment="Top" Width="25" Grid.Column="2" Click="Give_10_Click"/>
+        <Button x:Name="Give_50" Content="50" HorizontalAlignment="Left" Margin="95,22,0,0" VerticalAlignment="Top" Width="25" Grid.Column="2" Click="Give_50_Click"/>
+        <Button x:Name="Give_100" Content="100" HorizontalAlignment="Left" Margin="125,22,0,0" VerticalAlignment="Top" Width="25" Grid.Column="2" Click="Give_100_Click"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="2" HorizontalAlignment="Left" Height="85" Margin="28,52,0,0" VerticalAlignment="Top" Width="137">
+            <Label x:Name="OrderStatus" Content="ВАШ ЗАКАЗ" Margin="0,0,0,59"/>
+        </Border>
+        <Rectangle x:Name="Point_1" Fill="#FFEAB017" HorizontalAlignment="Left" Margin="91,84,0,465" Stroke="Black" Width="13" RadiusX="100" RadiusY="100" Grid.Column="2"/>
+        <Rectangle x:Name="Point_2" Fill="#FFEAB017" HorizontalAlignment="Left" Margin="105,84,0,465" Stroke="Black" Width="13" RadiusX="100" RadiusY="100" Grid.Column="2"/>
+        <Rectangle x:Name="Point_3" Fill="#FFEAB017" HorizontalAlignment="Left" Margin="119,84,0,465" Stroke="Black" Width="13" RadiusX="100" RadiusY="100" Grid.Column="2"/>
+        <Rectangle x:Name="Point_4" Fill="#FFF4F4F5" HorizontalAlignment="Left" Margin="134,84,0,465" Stroke="Black" Width="13" RadiusX="100" RadiusY="100" Grid.Column="2"/>
+        <Rectangle x:Name="Point_5" Fill="#FFF4F4F5" HorizontalAlignment="Left" Margin="148,84,0,465" Stroke="Black" Width="13" RadiusX="100" RadiusY="100" Grid.Column="2"/>
+        <Label Content="САХАР" Grid.Column="2" HorizontalAlignment="Left" Margin="31,77,0,0" VerticalAlignment="Top" Width="55"/>
+        <Label Content="КРЕДИТ" Grid.Column="2" HorizontalAlignment="Left" Margin="31,108,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="CreditValue" Content="0.00" Grid.Column="2" HorizontalAlignment="Left" Margin="109,108,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="MinusSugar" Content="-" Grid.Column="2" HorizontalAlignment="Left" Margin="28,148,0,0" VerticalAlignment="Top" Width="27" Click="MinusSugar_Click"/>
+        <Button x:Name="PlusSugar" Content="+" Grid.Column="2" HorizontalAlignment="Left" Margin="134,148,0,0" VerticalAlignment="Top" Width="27" Click="PlusSugar_Click"/>
+        <Button x:Name="AmericanoButton" Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="10,143,0,0" VerticalAlignment="Top" Width="31" Height="43" Click="AmericanoButton_Click"/>
+        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="10,191,0,0" VerticalAlignment="Top" Width="31" Height="43"/>
+        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="31" Height="43"/>
+        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="10,287,0,0" VerticalAlignment="Top" Width="31" Height="43"/>
+        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="87,143,0,0" VerticalAlignment="Top" Width="31" Height="43"/>
+        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="87,191,0,0" VerticalAlignment="Top" Width="31" Height="43"/>
+        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="87,239,0,0" VerticalAlignment="Top" Width="31" Height="43"/>
+        <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="87,287,0,0" VerticalAlignment="Top" Width="31" Height="43"/>
+        <Border x:Name="OutputWindow" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="34,427,0,0" VerticalAlignment="Top" Width="100"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="2" HorizontalAlignment="Left" Height="27" Margin="73,442,0,0" VerticalAlignment="Top" Width="47"/>
+
     </Grid>
 </Window>

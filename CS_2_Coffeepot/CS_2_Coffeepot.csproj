@@ -71,6 +71,7 @@
     <Compile Include="Macchiano.cs" />
     <Compile Include="Machine.cs" />
     <Compile Include="Ristretto.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="Strength.cs" />
     <Compile Include="StrengthDrink.cs" />
     <Compile Include="Sugar.cs" />

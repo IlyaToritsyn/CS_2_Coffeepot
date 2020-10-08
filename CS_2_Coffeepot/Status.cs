@@ -5,12 +5,11 @@ using System.Text;
 
 namespace CS_2_Coffeepot
 {
-    public class Black : Coffee
+    public enum Status
     {
-        public Black()
-        {
-            Name = "Black";
-            Price = 50.00;
-        }
+        Ready,
+        Failed,
+        Not_running,
+        Starting
     }
 }

@@ -7,9 +7,10 @@ namespace CS_2_Coffeepot
 {
     public interface IDrink
     {
-        int Name { get; set; }
-        int Price { get; set; }
+        string Name { get; set; }
+        double Price { get; set; }
 
         void Cook();
+        void ChangePrice();
     }
 }
