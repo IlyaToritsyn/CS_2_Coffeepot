@@ -10,7 +10,7 @@ namespace CS_2_Coffeepot
         public DryCappuccino()
         {
             Name = "Dry Cappuccino";
-            Price = 50.00;
+            Price = 70.00;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace CS_2_Coffeepot
         public Doppio()
         {
             Name = "Doppio";
-            Price = 50.00;
+            Price = 40.00;
         }
     }
 }

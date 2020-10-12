@@ -22,6 +22,8 @@ namespace CS_2_Coffeepot
     {
         Machine coffepot;
         List<Rectangle> sugarPoints;
+        List<Drink> drinks;
+        List<Button> drinkButtons;
         Americano americano;
         Black black;
         Cappuccino cappuccino;
@@ -40,7 +42,7 @@ namespace CS_2_Coffeepot
             doppio = new Doppio();
             dryCappuccino = new DryCappuccino();
             espresso = new Espresso();
-            List<Drink> drinks = new List<Drink>() {
+            drinks = new List<Drink>() {
                 americano,
                 black,
                 cappuccino,
@@ -48,30 +50,44 @@ namespace CS_2_Coffeepot
                 creamAndSugar,
                 doppio,
                 dryCappuccino,
-                espresso };
+                espresso
+            };
             coffepot = new Machine(drinks);
 
             InitializeComponent();
 
             sugarPoints = new List<Rectangle>() { Point_1, Point_2, Point_3, Point_4, Point_5 };
+            drinkButtons = new List<Button>() {
+                AmericanoButton,
+                BlackButton,
+                CappuccinoButton,
+                ConPannaButton,
+                CreamAndSugarButton,
+                DoppioButton,
+                DryCappuccinoButton,
+                EspressoButton 
+           };
         }
 
         private void Give_10_Click(object sender, RoutedEventArgs e)
         {
             coffepot.Credit += 10;
             CreditValue.Content = coffepot.Credit;
+            UpdateDrinkAccess();
         }
 
         private void Give_50_Click(object sender, RoutedEventArgs e)
         {
             coffepot.Credit += 50;
             CreditValue.Content = coffepot.Credit;
+            UpdateDrinkAccess();
         }
 
         private void Give_100_Click(object sender, RoutedEventArgs e)
         {
             coffepot.Credit += 100;
             CreditValue.Content = coffepot.Credit;
+            UpdateDrinkAccess();
         }
 
         private void UpdateSugarLevel()
@@ -90,6 +106,22 @@ namespace CS_2_Coffeepot
             }
         }
 
+        private void UpdateDrinkAccess()
+        {
+            for (int i = 0; i < drinkButtons.Count; i++)
+            {
+                if (drinks[i].Price > coffepot.Credit)
+                {
+                    drinkButtons[i].IsEnabled = false;
+                }
+
+                else
+                {
+                    drinkButtons[i].IsEnabled = true;
+                }
+            }
+        }
+
         private void MinusSugar_Click(object sender, RoutedEventArgs e)
         {
             coffepot.SugarLevel--;
@@ -102,11 +134,75 @@ namespace CS_2_Coffeepot
             UpdateSugarLevel();
         }
 
+        private void AnimateCooking()
+        {
+            OrderStatus.Content = "НАПИТОК ГОТОВИТСЯ...";
+            OrderStatus.Content = "ПРИЯТНОГО АППЕТИТА!";
+        }
         private void AmericanoButton_Click(object sender, RoutedEventArgs e)
         {
             OutputWindow.Background = Brushes.Red;
-            OrderStatus.Content = "НАПИТОК ГОТОВИТСЯ...";
-            americano.Cook();
+            AnimateCooking();
+        }
+
+        private void BlackButton_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Background = Brushes.Black;
+            AnimateCooking();
+        }
+
+        private void CappuccinoButton_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Background = Brushes.Orange;
+            AnimateCooking();
+        }
+
+        private void ConPannaButton_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Background = Brushes.Yellow;
+            AnimateCooking();
+        }
+
+        private void CreamAndSugarButton_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Background = Brushes.Green;
+            AnimateCooking();
+        }
+
+        private void DoppioButton_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Background = Brushes.Cyan;
+            AnimateCooking();
+        }
+
+        private void DryCappuccinoButton_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Background = Brushes.Blue;
+            AnimateCooking();
+        }
+
+        private void EspressoButton_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Background = Brushes.Violet;
+            AnimateCooking();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!coffepot.IsResetAvaible)
+            {
+                return;
+            }
+
+            else
+            {
+                coffepot.Credit = 0;
+                coffepot.SugarLevel = 3;
+                CreditValue.Content = "0";
+                OrderStatus.Content = "ВНЕСИТЕ ДЕНЬГИ";
+                UpdateSugarLevel();
+                UpdateDrinkAccess();
+            }
         }
     }
 }

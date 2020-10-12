@@ -11,7 +11,7 @@ namespace CS_2_Coffeepot
         public Americano()
         {
             Name = "Americano";
-            Price = 50.00;
+            Price = 30.00;
         }
 
         public override void Cook()

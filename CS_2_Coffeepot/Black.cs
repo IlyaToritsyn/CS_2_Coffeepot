@@ -10,7 +10,7 @@ namespace CS_2_Coffeepot
         public Black()
         {
             Name = "Black";
-            Price = 50.00;
+            Price = 70.00;
         }
     }
 }
