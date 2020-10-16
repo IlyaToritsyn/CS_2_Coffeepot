@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace CS_2_Coffeepot
 {
+    [Serializable(), XmlInclude(typeof(Coffee))]
     public class Drink : IDrink
     {
         double price;

@@ -6,6 +6,7 @@ using System.Text;
 
 namespace CS_2_Coffeepot
 {
+    [Serializable]
     public class Americano : Coffee
     {
         public Americano()

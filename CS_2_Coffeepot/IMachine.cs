@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CS_2_Coffeepot
@@ -18,5 +19,11 @@ namespace CS_2_Coffeepot
         void DeleteDrink();
         void GiveChange();
         void GetMoney();
+
+        void Deposit(int deposit);
+
+        void IncreaseSugar();
+
+        void DecreaseSugar();
     }
 }
