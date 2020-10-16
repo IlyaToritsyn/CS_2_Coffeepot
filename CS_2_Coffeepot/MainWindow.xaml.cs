@@ -311,22 +311,12 @@ namespace CS_2_Coffeepot
 
             if (passwordWindow.ShowDialog() == true)
             {
-                if (passwordWindow.Password == "12345678")
-                {
-                    AdminPanelWindow adminPanelWindow = new AdminPanelWindow(drinks);
+                AdminPanelWindow adminPanelWindow = new AdminPanelWindow(drinks);
 
-                    adminPanelWindow.ShowDialog();
-
-                    DeserializeDrinks();
-                    UpdateButtonsTexts();
-                }
-
-                else
-                    MessageBox.Show("Неверный пароль");
-            }
-            else
-            {
-                MessageBox.Show("Авторизация не пройдена");
+                adminPanelWindow.ShowDialog();
+                adminPanelWindow.ApplyChange();
+                DeserializeDrinks();
+                UpdateButtonsTexts();
             }
         }
     }

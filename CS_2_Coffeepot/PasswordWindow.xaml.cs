@@ -33,7 +33,22 @@ namespace CS_2_Coffeepot
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            if (Password == "12345678")
+            {
+                this.DialogResult = true;
+            }
+
+            else
+            {
+                PasswordPasswordBox.Background = Brushes.Red;
+                InvalidPasswordLabel.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void PasswordPasswordBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PasswordPasswordBox.Background = Brushes.White;
+            InvalidPasswordLabel.Visibility = Visibility.Hidden;
         }
     }
 }
