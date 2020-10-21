@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS_2_Coffeepot"
         mc:Ignorable="d"
-        Title="AdminPanelWindow" Height="250.312" Width="274.062">
+        Title="Редактор цен" Height="155.123" Width="284.135" Icon="img/Coin.jpg" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <ComboBox x:Name="DrinksComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" IsReadOnly="True" SelectedIndex="0" SelectionChanged="DrinksComboBox_SelectionChanged"/>
-        <TextBox x:Name="PriceTextBox" HorizontalAlignment="Left" Height="23" Margin="135,10,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="120" GotFocus="PriceTextBox_GotFocus"/>
-        <Button x:Name="ApplyButton" Content="Apply" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Width="75" Click="ApplyButton_Click"/>
-        <Button x:Name="CloseButton" Content="Close" HorizontalAlignment="Left" Margin="181,188,0,0" VerticalAlignment="Top" Width="75" Click="CloseButton_Click"/>
-        <Label x:Name="ChangesAppliedLabel" Content="Изменения успешно применены." HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="245" Foreground="#FF00A400" FontWeight="Bold" Visibility="Hidden"/>
+        <TextBox x:Name="PriceTextBox" HorizontalAlignment="Left" Height="23" Margin="135,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" GotFocus="PriceTextBox_GotFocus" TextChanged="PriceTextBox_TextChanged"/>
+        <Button x:Name="CloseButton" Content="OK" HorizontalAlignment="Left" Margin="135,69,0,0" VerticalAlignment="Top" Width="120" Click="OKButton_Click" Height="40" IsDefault="True"/>
+        <Label x:Name="ChangesAppliedLabel" Content="Изменения успешно применены." HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="245" Foreground="#FF00A400" FontWeight="Bold" Visibility="Hidden"/>
+        <Button x:Name="CancelButton" Content="Отмена" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Width="120" Height="40" IsCancel="True" Click="CancelButton_Click"/>
 
     </Grid>
 </Window>

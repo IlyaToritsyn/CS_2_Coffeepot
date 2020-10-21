@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
 
@@ -18,13 +18,44 @@ namespace CS_2_Coffeepot
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int test = 0;
+        /// <summary>
+        /// Непосредственно сама кофемашина.
+        /// </summary>
         Machine coffepot;
+
+        /// <summary>
+        /// Индикаторы уровня сахара в интерфейсе.
+        /// </summary>
         List<Rectangle> sugarPoints;
-        public List<Drink> drinks = null;
-        List<Button> drinkButtons;
+
+        /// <summary>
+        /// Напитки.
+        /// </summary>
+        List<Drink> drinks;
+
+        /// <summary>
+        /// Картинки напитков (условные кнопки автомата).
+        /// </summary>
+        List<Image> drinkImages;
+
+        /// <summary>
+        /// Подписи к кнопкам автомата.
+        /// </summary>
+        List<TextBlock> drinkTextBlocks;
+
+        /// <summary>
+        /// Все кнопки основной формы.
+        /// </summary>
+        List<Button> buttons;
+
+        /// <summary>
+        /// Для сериализации напитков.
+        /// </summary>
         XmlSerializer formatter = new XmlSerializer(typeof(List<Drink>));
 
+        /// <summary>
+        /// Десериализация напитков.
+        /// </summary>
         private void DeserializeDrinks()
         {
             using (FileStream fs = new FileStream("Drinks.xml", FileMode.Open))
@@ -33,12 +64,124 @@ namespace CS_2_Coffeepot
             }
         }
 
-        private void UpdateButtonsTexts()
+        /// <summary>
+        /// Обновить подписи к кнопкам.
+        /// </summary>
+        private void UpdateTextBlockTexts()
         {
-            for (int i = 0; i < drinkButtons.Count; i++)
+            for (int i = 0; i < drinkTextBlocks.Count; i++)
             {
-                drinkButtons[i].Content = drinks[i].Price + " - " + drinks[i].Name;
+                drinkTextBlocks[i].Text = drinks[i].Price + " - " + drinks[i].Name;
             }
+        }
+
+        /// <summary>
+        /// Отобразить уровень сахара в интерфейсе через цветные индикаторы.
+        /// </summary>
+        private void UpdateSugarLevel()
+        {
+            for (int i = 0; i < sugarPoints.Count; i++)
+            {
+                if (i < coffepot.SugarLevel)
+                {
+                    sugarPoints[i].Fill = Brushes.Orange;
+                }
+
+                else
+                {
+                    sugarPoints[i].Fill = Brushes.White;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Отобразить в интерфейсе: какие напитки доступны, а какие - нет.
+        /// </summary>
+        private void UpdateDrinkAccess()
+        {
+            for (int i = 0; i < drinkImages.Count; i++)
+            {
+                if (drinks[i].Price > coffepot.Credit)
+                {
+                    drinkImages[i].IsEnabled = false;
+                    drinkImages[i].Opacity = 0.5;
+                }
+
+                else
+                {
+                    drinkImages[i].IsEnabled = true;
+                    drinkImages[i].Opacity = 1;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Отразить изменение уровня сахара в интерфейсе (индикаторы + кнопка отмены).
+        /// </summary>
+        private void DisplaySugarChange()
+        {
+            CancelButton.IsEnabled = coffepot.IsResetAvaible;
+
+            UpdateSugarLevel();
+        }
+
+        /// <summary>
+        /// Если нажата кнопка изменения уровня сахара (+ или -).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChangeSugarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (((Button)sender).Tag.ToString() == "+")
+            {
+                coffepot.IncreaseSugar();
+            }
+
+            else if (((Button)sender).Tag.ToString() == "-")
+            {
+                coffepot.DecreaseSugar();
+            }
+
+            DisplaySugarChange();
+        }
+
+        /// <summary>
+        /// Когда наш любимый пользователь выбрал себе напиток.
+        /// </summary>
+        /// <param name="drink">Выбранный напиток</param>
+        private void AnimateCooking(Drink drink)
+        {
+            coffepot.Credit -= drink.Price; //Вычитаем цену напитка из внесённых денег. В дальнейшем сможем определить, выдавать ли сдачу.
+
+            Reset();
+
+            foreach (var i in buttons)
+            {
+                i.IsEnabled = false;
+            }
+            
+            OutputWindowImage.IsEnabled = false;
+            OrderStatus.Content = "НАПИТОК ГОТОВИТСЯ...";
+
+            var animation = Task.Factory.StartNew(() =>
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    Thread.Sleep(1000);
+
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        OutputWindowImage.Source = new BitmapImage(new Uri("pack://application:,,,/img/Coffee_cup_" + i + ".jpg", UriKind.RelativeOrAbsolute));
+                    }));
+                }
+
+                //Выводится только в конце анимации.
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    OrderStatus.Content = "ПРИЯТНОГО АППЕТИТА!";
+                    OutputWindowImage.IsEnabled = true;
+                }));
+            });
         }
 
         public MainWindow()
@@ -72,109 +215,42 @@ namespace CS_2_Coffeepot
             InitializeComponent();
 
             sugarPoints = new List<Rectangle>() { Point_1, Point_2, Point_3, Point_4, Point_5 };
-            drinkButtons = new List<Button>() {
-                Drink_1_Button,
-                Drink_2_Button,
-                Drink_3_Button,
-                Drink_4_Button,
-                Drink_5_Button,
-                Drink_6_Button,
-                Drink_7_Button,
-                Drink_8_Button
-           };
+            drinkImages = new List<Image>()
+            {
+                Drink1Image,
+                Drink2Image,
+                Drink3Image,
+                Drink4Image,
+                Drink5Image,
+                Drink6Image,
+                Drink7Image,
+                Drink8Image
+            };
+            buttons = new List<Button>()
+            {
+                AdminPanelButton,
+                Deposit_1,
+                Deposit_2,
+                Deposit_5,
+                Deposit_10,
+                MinusSugar,
+                PlusSugar,
+                CancelButton
+            };
+            drinkTextBlocks = new List<TextBlock>()
+            {
+                Drink1Label,
+                Drink2Label,
+                Drink3Label,
+                Drink4Label,
+                Drink5Label,
+                Drink6Label,
+                Drink7Label,
+                Drink8Label
+            };
 
-            UpdateButtonsTexts();
+            UpdateTextBlockTexts();
             UpdateSugarLevel();
-        }
-
-        private void UpdateSugarLevel()
-        {
-            for (int i = 0; i < sugarPoints.Count; i++)
-            {
-                if (i < coffepot.SugarLevel)
-                {
-                    sugarPoints[i].Fill = Brushes.Orange;
-                }
-
-                else
-                {
-                    sugarPoints[i].Fill = Brushes.White;
-                }
-            }
-        }
-
-        private void UpdateDrinkAccess()
-        {
-            for (int i = 0; i < drinkButtons.Count; i++)
-            {
-                if (drinks[i].Price > coffepot.Credit)
-                {
-                    drinkButtons[i].IsEnabled = false;
-                }
-
-                else
-                {
-                    drinkButtons[i].IsEnabled = true;
-                }
-            }
-        }
-
-        private void DisplaySugarChange()
-        {
-            CancelButton.IsEnabled = coffepot.IsResetAvaible;
-
-            UpdateSugarLevel();
-        }
-
-        private void MinusSugar_Click(object sender, RoutedEventArgs e)
-        {
-            coffepot.DecreaseSugar();
-            DisplaySugarChange();
-        }
-
-        private void PlusSugar_Click(object sender, RoutedEventArgs e)
-        {
-            coffepot.IncreaseSugar();
-            DisplaySugarChange();
-        }
-
-        private void AnimateCooking(Drink drink)
-        {
-            coffepot.Credit -= drink.Price;
-
-            Reset();
-
-            OrderStatus.Content = "НАПИТОК ГОТОВИТСЯ...";
-
-            var animation = Task.Factory.StartNew(() =>
-            {
-                this.Dispatcher.Invoke(new Action(() =>
-                {
-                    OutputWindow.Background = Brushes.White;
-                }));
-                
-                Thread.Sleep(1000);
-
-                this.Dispatcher.Invoke(new Action(() =>
-                {
-                    OutputWindow.Background = Brushes.Red;
-                }));
-
-                Thread.Sleep(1000);
-
-                this.Dispatcher.Invoke(new Action(() =>
-                {
-                    OutputWindow.Background = Brushes.Yellow;
-                }));
-
-                Thread.Sleep(1000);
-
-                this.Dispatcher.Invoke(new Action(() =>
-                {
-                    OutputWindow.Background = Brushes.Green;
-                    OrderStatus.Content = "ПРИЯТНОГО АППЕТИТА!";
-                }));
-            });
         }
 
         private void ProcessChange()
@@ -183,7 +259,7 @@ namespace CS_2_Coffeepot
             {
                 coffepot.GiveChange();
 
-                ChangeWindow.Background = Brushes.Red;
+                ChangeWindowImage.Source = new BitmapImage(new Uri("pack://application:,,,/img/Coin.jpg", UriKind.RelativeOrAbsolute));
             }
         }
 
@@ -217,18 +293,22 @@ namespace CS_2_Coffeepot
 
         private void OutputWindow_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (OutputWindow.Background != Brushes.White)
-            {
-                OutputWindow.Background = Brushes.White;
-                OrderStatus.Content = "ВНЕСИТЕ ДЕНЬГИ";
-            }
+            OutputWindowImage.Source = new BitmapImage(new Uri("pack://application:,,,/img/Nothing.jpg", UriKind.RelativeOrAbsolute));
+            OrderStatus.Content = "ВНЕСИТЕ ДЕНЬГИ";
+            Deposit_1.IsEnabled = true;
+            Deposit_2.IsEnabled = true;
+            Deposit_5.IsEnabled = true;
+            Deposit_10.IsEnabled = true;
+            MinusSugar.IsEnabled = true;
+            PlusSugar.IsEnabled = true;
+            AdminPanelButton.IsEnabled = true;
         }
 
         private void ChangeWindow_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (ChangeWindow.Background != Brushes.White)
+            if (ChangeWindowImage.Source != null)
             {
-                ChangeWindow.Background = Brushes.White;
+                ChangeWindowImage.Source = null;
             }
         }
 
@@ -241,68 +321,10 @@ namespace CS_2_Coffeepot
             CancelButton.IsEnabled = true;
         }
 
-        private void Deposit_1_Click(object sender, RoutedEventArgs e)
+        private void Deposit_Click(object sender, RoutedEventArgs e)
         {
-            coffepot.Deposit(1);
+            coffepot.Deposit(Convert.ToInt32(((Button)sender).Tag));
             DisplayDeposit();
-        }
-
-        private void Deposit_2_Click(object sender, RoutedEventArgs e)
-        {
-            coffepot.Deposit(2);
-            DisplayDeposit();
-        }
-
-        private void Deposit_5_Click(object sender, RoutedEventArgs e)
-        {
-            coffepot.Deposit(5);
-            DisplayDeposit();
-        }
-
-        private void Deposit_10_Click(object sender, RoutedEventArgs e)
-        {
-            coffepot.Deposit(10);
-            DisplayDeposit();
-        }
-
-        private void Drink_1_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateCooking(drinks[0]);
-        }
-
-        private void Drink_2_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateCooking(drinks[1]);
-        }
-
-        private void Drink_3_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateCooking(drinks[2]);
-        }
-
-        private void Drink_4_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateCooking(drinks[3]);
-        }
-
-        private void Drink_5_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateCooking(drinks[4]);
-        }
-
-        private void Drink_6_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateCooking(drinks[5]);
-        }
-
-        private void Drink_7_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateCooking(drinks[6]);
-        }
-
-        private void Drink_8_Button_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateCooking(drinks[7]);
         }
 
         private void AdminPanelButton_Click(object sender, RoutedEventArgs e)
@@ -313,11 +335,23 @@ namespace CS_2_Coffeepot
             {
                 AdminPanelWindow adminPanelWindow = new AdminPanelWindow(drinks);
 
-                adminPanelWindow.ShowDialog();
-                adminPanelWindow.ApplyChange();
+                if (adminPanelWindow.ShowDialog() == false)
+                {
+                    using (FileStream fs = new FileStream("Drinks.xml", FileMode.Truncate))
+                    {
+                        formatter.Serialize(fs, drinks);
+                    }
+                }
+
                 DeserializeDrinks();
-                UpdateButtonsTexts();
+                UpdateDrinkAccess();
+                UpdateTextBlockTexts();
             }
+        }
+
+        private void DrinkImage_Click(object sender, MouseButtonEventArgs e)
+        {
+            AnimateCooking(drinks[Convert.ToInt32(((Image)sender).Tag)]);
         }
     }
 }

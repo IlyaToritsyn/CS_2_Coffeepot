@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,14 +35,40 @@ namespace CS_2_Coffeepot
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            if (Password == "12345678")
+            string passwordFilePath = "_.txt";
+
+            if (File.Exists(passwordFilePath))
             {
-                this.DialogResult = true;
+                Regex regex = new Regex("^([a-zA-Z0-9]{5,15})$");
+                string filePassword = File.ReadAllText(passwordFilePath);
+
+                if (regex.IsMatch(filePassword))
+                {
+                    if (filePassword == Password)
+                    {
+                        DialogResult = true;
+
+                        return;
+                    }
+                    
+                    else
+                    {
+                        PasswordPasswordBox.Background = Brushes.Pink;
+                        InvalidPasswordLabel.Visibility = Visibility.Visible;
+
+                        return;
+                    }
+                }
+            }
+
+            if (Password == "admin")
+            {
+                DialogResult = true;
             }
 
             else
             {
-                PasswordPasswordBox.Background = Brushes.Red;
+                PasswordPasswordBox.Background = Brushes.Pink;
                 InvalidPasswordLabel.Visibility = Visibility.Visible;
             }
         }
