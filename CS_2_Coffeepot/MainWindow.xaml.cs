@@ -337,10 +337,7 @@ namespace CS_2_Coffeepot
 
                 if (adminPanelWindow.ShowDialog() == false)
                 {
-                    using (FileStream fs = new FileStream("Drinks.xml", FileMode.Truncate))
-                    {
-                        formatter.Serialize(fs, drinks);
-                    }
+                    adminPanelWindow.ApplyChange();
                 }
 
                 DeserializeDrinks();

@@ -23,18 +23,22 @@ namespace CS_2_Coffeepot
     public partial class AdminPanelWindow : Window
     {
         int comboboxItemIndex = 0;
-        List<Drink> drinksList;
 
+        List<Drink> drinksList;
+        List<double> prices;
         public AdminPanelWindow(List<Drink> drinks)
         {
-            InitializeComponent();
             drinksList = drinks;
             List<string> drinksNames = new List<string>();
+            prices = new List<double>();
 
-            foreach (var i in drinksList)
+            foreach (var i in drinks)
             {
                 drinksNames.Add(i.Name);
+                prices.Add(i.Price);
             }
+
+            InitializeComponent();
 
             DrinksComboBox.ItemsSource = drinksNames;
         }
@@ -43,11 +47,14 @@ namespace CS_2_Coffeepot
         {
             if (!int.TryParse(PriceTextBox.Text, out int priceInt) || priceInt <= 0 || priceInt > 1000 || priceInt == drinksList[comboboxItemIndex].Price)
             {
+                ChangesAppliedLabel.Visibility = Visibility.Hidden;
+
                 return;
             }
 
             else
             {
+                prices[comboboxItemIndex] = double.Parse(PriceTextBox.Text);
                 string xmlFilePath = "Drinks.xml";
                 XDocument xdoc = XDocument.Load(xmlFilePath);
 
@@ -87,8 +94,7 @@ namespace CS_2_Coffeepot
             ApplyChange();
 
             comboboxItemIndex = DrinksComboBox.SelectedIndex;
-            //ХОЧУ, ЧТОБЫ ПРИ ВЫБОРЕ В КОМБОБОКСЕ НАПИТКА В ТЕКСТБОКСЕ С ЦЕНОЙ ПО УМОЛЧАНИЮ БЫЛА ТЕКУЩАЯ ЦЕНА СООТВЕТСВУЮЩЕГО НАПИТКА
-            PriceTextBox.Text = drinksList[DrinksComboBox.SelectedIndex].Price.ToString();
+            PriceTextBox.Text = prices[DrinksComboBox.SelectedIndex].ToString();
         }
 
         private void PriceTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -108,7 +114,17 @@ namespace CS_2_Coffeepot
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
+            /// <summary>
+            /// Для сериализации напитков.
+            /// </summary>
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Drink>));
+
+            using (FileStream fs = new FileStream("Drinks.xml", FileMode.Truncate))
+            {
+                formatter.Serialize(fs, drinksList);
+            }
+
+            DialogResult = true;
         }
     }
 }

@@ -78,5 +78,13 @@ namespace CS_2_Coffeepot
             PasswordPasswordBox.Background = Brushes.White;
             InvalidPasswordLabel.Visibility = Visibility.Hidden;
         }
+
+        private void PasswordPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (Password.Length > 15)
+            {
+                PasswordPasswordBox.Password = Password.Substring(0, Password.Length - 1);
+            }
+        }
     }
 }

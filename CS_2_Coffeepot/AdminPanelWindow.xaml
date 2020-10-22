@@ -9,9 +9,9 @@
     <Grid>
         <ComboBox x:Name="DrinksComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" IsReadOnly="True" SelectedIndex="0" SelectionChanged="DrinksComboBox_SelectionChanged"/>
         <TextBox x:Name="PriceTextBox" HorizontalAlignment="Left" Height="23" Margin="135,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" GotFocus="PriceTextBox_GotFocus" TextChanged="PriceTextBox_TextChanged"/>
-        <Button x:Name="CloseButton" Content="OK" HorizontalAlignment="Left" Margin="135,69,0,0" VerticalAlignment="Top" Width="120" Click="OKButton_Click" Height="40" IsDefault="True"/>
+        <Button x:Name="CloseButton" Content="OK" HorizontalAlignment="Left" Margin="135,69,0,0" VerticalAlignment="Top" Width="120" Click="OKButton_Click" Height="40"/>
         <Label x:Name="ChangesAppliedLabel" Content="Изменения успешно применены." HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="245" Foreground="#FF00A400" FontWeight="Bold" Visibility="Hidden"/>
-        <Button x:Name="CancelButton" Content="Отмена" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Width="120" Height="40" IsCancel="True" Click="CancelButton_Click"/>
+        <Button x:Name="CancelButton" Content="Отмена" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="CancelButton_Click"/>
 
     </Grid>
 </Window>
